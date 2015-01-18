@@ -1,8 +1,10 @@
 package com.cuber.library;
 
+import android.animation.Animator;
 import android.content.Context;
 import android.graphics.Camera;
 import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.Transformation;
 import android.widget.ImageView;
@@ -209,6 +212,8 @@ public class CuberMenu extends ViewGroup {
                 clickPosition = (Integer) v.getTag();
                 listener.onClick(clickPosition);
                 offsetPosition = imageViews.size() - clickPosition > clickPosition ? imageViews.size() - clickPosition - 1 : clickPosition;
+
+                post(clickRunnable);
                 hide();
             }
         }
@@ -224,6 +229,51 @@ public class CuberMenu extends ViewGroup {
         clickable = false;
         post(hideRunnable);
     }
+
+    private Runnable clickRunnable = new Runnable() {
+        @Override
+        public void run() {
+            final ImageView view = new ImageView(getContext());
+
+            Drawable heart = imageViews.get(clickPosition).getDrawable();
+//            heart.setColorFilter(maskingColor, PorterDuff.Mode.MULTIPLY);
+            view.setImageDrawable(heart);
+
+            view.layout(imageViews.get(clickPosition).getLeft(),
+                    imageViews.get(clickPosition).getTop(),
+                    imageViews.get(clickPosition).getRight(),
+                    imageViews.get(clickPosition).getBottom()
+            );
+            addView(view);
+            view.animate()
+                    .scaleX(3.0f)
+                    .scaleY(3.0f)
+                    .alpha(0.0f)
+                    .setDuration(500)
+                    .setInterpolator(new DecelerateInterpolator(0.75f))
+                    .setListener(new Animator.AnimatorListener() {
+                        @Override
+                        public void onAnimationStart(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            removeView(view);
+                        }
+
+                        @Override
+                        public void onAnimationCancel(Animator animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animator animation) {
+
+                        }
+                    });
+        }
+    };
 
     private Runnable showRunnable = new Runnable() {
         int i = 0;
