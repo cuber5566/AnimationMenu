@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
@@ -94,7 +93,7 @@ public class CuberMenu extends ViewGroup {
             }
         });
 
-        anim.addAnimation(new AlphaAnimation(0, 1));
+//        anim.addAnimation(new AlphaAnimation(0, 1));
         anim.setDuration(ANIMATION_DURATION);
         anim.setFillAfter(true);
         return anim;
@@ -108,7 +107,7 @@ public class CuberMenu extends ViewGroup {
                 setInterpolator(new HesitateInterpolator());
             }
         });
-        anim.addAnimation(new AlphaAnimation(1, 0));
+//        anim.addAnimation(new AlphaAnimation(1, 0));
         anim.setDuration(ANIMATION_DURATION);
         anim.setFillAfter(true);
         return anim;
@@ -122,7 +121,7 @@ public class CuberMenu extends ViewGroup {
                 setInterpolator(new HesitateInterpolator());
             }
         });
-        anim.addAnimation(new AlphaAnimation(0, 1));
+//        anim.addAnimation(new AlphaAnimation(0, 1));
         anim.setDuration(ANIMATION_DURATION);
         anim.setFillAfter(true);
         return anim;
@@ -136,7 +135,7 @@ public class CuberMenu extends ViewGroup {
                 setInterpolator(new HesitateInterpolator());
             }
         });
-        anim.addAnimation(new AlphaAnimation(1, 0));
+//        anim.addAnimation(new AlphaAnimation(1, 0));
         anim.setDuration(ANIMATION_DURATION);
         anim.setFillAfter(true);
         return anim;
@@ -150,7 +149,7 @@ public class CuberMenu extends ViewGroup {
                 setInterpolator(new HesitateInterpolator());
             }
         });
-        anim.addAnimation(new AlphaAnimation(1, 0));
+//        anim.addAnimation(new AlphaAnimation(1, 0));
         anim.setDuration(ANIMATION_DURATION);
         anim.setFillAfter(true);
         return anim;
