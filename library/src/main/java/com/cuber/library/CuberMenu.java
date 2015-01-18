@@ -15,7 +15,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
+import android.view.animation.Interpolator;
 import android.view.animation.Transformation;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,7 +29,7 @@ import java.util.List;
 public class CuberMenu extends ViewGroup {
 
     private final String TAG = "CuberViewGroup";
-    private final int ANIMATION_DURATION = 125;
+    private final int ANIMATION_DURATION = 100;
     private final int BG_ANIMATION_DURATION = 500;
 
     private DisplayMetrics metrics;
@@ -90,9 +90,10 @@ public class CuberMenu extends ViewGroup {
         AnimationSet anim = new AnimationSet(false);
         anim.addAnimation(new Rotate3dAnimation(-90, 0, size, size / 2, 0, false, false) {
             {
-                setInterpolator(new LinearInterpolator());
+                setInterpolator(new HesitateInterpolator());
             }
         });
+
         anim.addAnimation(new AlphaAnimation(0, 1));
         anim.setDuration(ANIMATION_DURATION);
         anim.setFillAfter(true);
@@ -104,7 +105,7 @@ public class CuberMenu extends ViewGroup {
         AnimationSet anim = new AnimationSet(false);
         anim.addAnimation(new Rotate3dAnimation(0, -90, size, size / 2, 0, false, false) {
             {
-                setInterpolator(new LinearInterpolator());
+                setInterpolator(new HesitateInterpolator());
             }
         });
         anim.addAnimation(new AlphaAnimation(1, 0));
@@ -118,7 +119,7 @@ public class CuberMenu extends ViewGroup {
         AnimationSet anim = new AnimationSet(false);
         anim.addAnimation(new Rotate3dAnimation(-90, 0, size / 2, 0, 0, false, true) {
             {
-                setInterpolator(new LinearInterpolator());
+                setInterpolator(new HesitateInterpolator());
             }
         });
         anim.addAnimation(new AlphaAnimation(0, 1));
@@ -132,7 +133,7 @@ public class CuberMenu extends ViewGroup {
         AnimationSet anim = new AnimationSet(false);
         anim.addAnimation(new Rotate3dAnimation(0, 90, size / 2, size, 0, false, true) {
             {
-                setInterpolator(new LinearInterpolator());
+                setInterpolator(new HesitateInterpolator());
             }
         });
         anim.addAnimation(new AlphaAnimation(1, 0));
@@ -146,7 +147,7 @@ public class CuberMenu extends ViewGroup {
         AnimationSet anim = new AnimationSet(false);
         anim.addAnimation(new Rotate3dAnimation(0, -90, size / 2, 0, 0, false, true) {
             {
-                setInterpolator(new LinearInterpolator());
+                setInterpolator(new HesitateInterpolator());
             }
         });
         anim.addAnimation(new AlphaAnimation(1, 0));
@@ -382,6 +383,17 @@ public class CuberMenu extends ViewGroup {
 
             matrix.preTranslate(-centerX, -centerY);
             matrix.postTranslate(centerX, centerY);
+        }
+    }
+
+    private class HesitateInterpolator implements Interpolator {
+
+        public HesitateInterpolator() {
+        }
+
+        public float getInterpolation(float t) {
+            float x = 2.0f * t - 1.0f;
+            return 0.5f * (x * x * x + 1.0f);
         }
     }
 }
