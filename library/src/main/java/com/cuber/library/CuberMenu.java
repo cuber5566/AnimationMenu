@@ -28,7 +28,7 @@ import java.util.List;
 public class CuberMenu extends ViewGroup {
 
     private final String TAG = "CuberViewGroup";
-    private final int ANIMATION_DURATION = 100;
+    private final int ANIMATION_DURATION = 75;
     private final int BG_ANIMATION_DURATION = 500;
 
     private DisplayMetrics metrics;
