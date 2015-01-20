@@ -28,6 +28,7 @@ public class MainActivity extends ActionBarActivity {
                 view.start();
             }
         });
+
         view.setAdapter(new CuberMenuAdapter() {
             @Override
             public int getCount() {

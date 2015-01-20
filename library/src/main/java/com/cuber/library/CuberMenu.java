@@ -29,7 +29,7 @@ public class CuberMenu extends ViewGroup {
 
     private final String TAG = "CuberViewGroup";
     private final int ANIMATION_DURATION = 75;
-    private final int BG_ANIMATION_DURATION = 500;
+    private int BG_ANIMATION_DURATION;
 
     private DisplayMetrics metrics;
 
@@ -65,6 +65,7 @@ public class CuberMenu extends ViewGroup {
 
     public void setAdapter(CuberMenuAdapter adapter) {
         this.adapter = adapter;
+        BG_ANIMATION_DURATION = adapter.getCount() * ANIMATION_DURATION;
     }
 
     public void setOnMenuClickListener(OnMenuClickListener listener) {
@@ -79,8 +80,8 @@ public class CuberMenu extends ViewGroup {
         size = (int) (metrics.density * 56);
         padding = (int) (metrics.density * 8);
 
-        imageViews = new ArrayList<>();
-        textViews = new ArrayList<>();
+        imageViews = new ArrayList<ImageView>();
+        textViews = new ArrayList<TextView>();
 
     }
 
@@ -164,7 +165,7 @@ public class CuberMenu extends ViewGroup {
 
             bg = new View(getContext());
             bg.setBackgroundColor(0xFF000000);
-            bg.layout(l,t,r,b);
+            bg.layout(l, t, r, b);
             bg.animate().alpha(0);
             addView(bg);
             //icon
@@ -186,8 +187,8 @@ public class CuberMenu extends ViewGroup {
                 textView.setText("" + adapter.getTitle(i));
                 textView.layout(l, offsetTop, r - size, offsetTop + size);
                 textView.setGravity(Gravity.RIGHT);
-                textView.setPadding(padding, padding*2, padding, padding);
-                textView.animate().alpha(0).translationX(size).setDuration(0);
+                textView.setPadding(padding, padding * 2, padding, padding);
+                textView.animate().alpha(0).translationX(size / 2).setDuration(0);
                 textViews.add(textView);
                 addView(textView);
 
@@ -287,7 +288,7 @@ public class CuberMenu extends ViewGroup {
                 } else {
                     imageViews.get(i).startAnimation(getTBAnimation());
                 }
-                textViews.get(i).animate().alpha(1.0f).translationX(-padding).setDuration(ANIMATION_DURATION);
+                textViews.get(i).animate().alpha(1.0f).translationX(-padding).setDuration(ANIMATION_DURATION).setInterpolator(new HesitateInterpolator());
                 i++;
                 postDelayed(showRunnable, ANIMATION_DURATION);
             } else {
@@ -315,7 +316,8 @@ public class CuberMenu extends ViewGroup {
                         imageViews.get(i).startAnimation(getTBHAnimation());
                         doAnimationCount++;
                     }
-                    textViews.get(i).animate().alpha(0.0f).translationX(size).setDuration(ANIMATION_DURATION);
+                    textViews.get(i).animate().alpha(0.0f).translationX(size / 2).setDuration(ANIMATION_DURATION).setInterpolator(new HesitateInterpolator());
+                    ;
                 }
             }
             offsetPosition--;
