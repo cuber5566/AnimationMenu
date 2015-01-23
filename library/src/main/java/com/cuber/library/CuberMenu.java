@@ -88,7 +88,7 @@ public class CuberMenu extends ViewGroup {
     private AnimationSet getRLAnimation() {
         //rl
         AnimationSet anim = new AnimationSet(false);
-        anim.addAnimation(new RotateCameraAnimation(-90, 0, size, size / 2, false) {
+        anim.addAnimation(new Rotate3DAnimation(-90, 0, size, size / 2, false) {
             {
                 setInterpolator(new HesitateInterpolator());
             }
@@ -103,7 +103,7 @@ public class CuberMenu extends ViewGroup {
     private AnimationSet getLRAnimation() {
         //lr
         AnimationSet anim = new AnimationSet(false);
-        anim.addAnimation(new RotateCameraAnimation(0, -90, size, size / 2, false) {
+        anim.addAnimation(new Rotate3DAnimation(0, -90, size, size / 2, false) {
             {
                 setInterpolator(new HesitateInterpolator());
             }
@@ -117,7 +117,7 @@ public class CuberMenu extends ViewGroup {
     private AnimationSet getTBAnimation() {
         //tb
         AnimationSet anim = new AnimationSet(false);
-        anim.addAnimation(new RotateCameraAnimation(-90, 0, size / 2, 0, true) {
+        anim.addAnimation(new Rotate3DAnimation(-90, 0, size / 2, 0, true) {
             {
                 setInterpolator(new HesitateInterpolator());
             }
@@ -131,7 +131,7 @@ public class CuberMenu extends ViewGroup {
     private AnimationSet getTBHAnimation() {
         //tbh
         AnimationSet anim = new AnimationSet(false);
-        anim.addAnimation(new RotateCameraAnimation(0, 90, size / 2, size, true) {
+        anim.addAnimation(new Rotate3DAnimation(0, 90, size / 2, size, true) {
             {
                 setInterpolator(new HesitateInterpolator());
             }
@@ -145,7 +145,7 @@ public class CuberMenu extends ViewGroup {
     private AnimationSet getBTHAnimation() {
         //bthAnim
         AnimationSet anim = new AnimationSet(false);
-        anim.addAnimation(new RotateCameraAnimation(0, -90, size / 2, 0, true) {
+        anim.addAnimation(new Rotate3DAnimation(0, -90, size / 2, 0, true) {
             {
                 setInterpolator(new HesitateInterpolator());
             }
@@ -332,7 +332,7 @@ public class CuberMenu extends ViewGroup {
         }
     };
 
-    public static class RotateCameraAnimation extends Animation {
+    public static class Rotate3DAnimation extends Animation {
 
         private final float mFromDegrees;
         private final float mToDegrees;
@@ -341,7 +341,7 @@ public class CuberMenu extends ViewGroup {
         private final boolean mIsRotateX;
         private Camera mCamera;
 
-        public RotateCameraAnimation(float fromDegrees, float toDegrees,
+        public Rotate3DAnimation(float fromDegrees, float toDegrees,
                                  float centerX, float centerY, boolean isRotateX) {
             mFromDegrees = fromDegrees;
             mToDegrees = toDegrees;
