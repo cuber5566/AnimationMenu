@@ -80,15 +80,15 @@ public class CuberMenu extends ViewGroup {
         size = (int) (metrics.density * 56);
         padding = (int) (metrics.density * 8);
 
-        imageViews = new ArrayList<ImageView>();
-        textViews = new ArrayList<TextView>();
+        imageViews = new ArrayList<>();
+        textViews = new ArrayList<>();
 
     }
 
     private AnimationSet getRLAnimation() {
         //rl
         AnimationSet anim = new AnimationSet(false);
-        anim.addAnimation(new Rotate3dAnimation(-90, 0, size, size / 2, 0, false, false) {
+        anim.addAnimation(new RotateCameraAnimation(-90, 0, size, size / 2, false) {
             {
                 setInterpolator(new HesitateInterpolator());
             }
@@ -103,7 +103,7 @@ public class CuberMenu extends ViewGroup {
     private AnimationSet getLRAnimation() {
         //lr
         AnimationSet anim = new AnimationSet(false);
-        anim.addAnimation(new Rotate3dAnimation(0, -90, size, size / 2, 0, false, false) {
+        anim.addAnimation(new RotateCameraAnimation(0, -90, size, size / 2, false) {
             {
                 setInterpolator(new HesitateInterpolator());
             }
@@ -117,7 +117,7 @@ public class CuberMenu extends ViewGroup {
     private AnimationSet getTBAnimation() {
         //tb
         AnimationSet anim = new AnimationSet(false);
-        anim.addAnimation(new Rotate3dAnimation(-90, 0, size / 2, 0, 0, false, true) {
+        anim.addAnimation(new RotateCameraAnimation(-90, 0, size / 2, 0, true) {
             {
                 setInterpolator(new HesitateInterpolator());
             }
@@ -131,7 +131,7 @@ public class CuberMenu extends ViewGroup {
     private AnimationSet getTBHAnimation() {
         //tbh
         AnimationSet anim = new AnimationSet(false);
-        anim.addAnimation(new Rotate3dAnimation(0, 90, size / 2, size, 0, false, true) {
+        anim.addAnimation(new RotateCameraAnimation(0, 90, size / 2, size, true) {
             {
                 setInterpolator(new HesitateInterpolator());
             }
@@ -145,7 +145,7 @@ public class CuberMenu extends ViewGroup {
     private AnimationSet getBTHAnimation() {
         //bthAnim
         AnimationSet anim = new AnimationSet(false);
-        anim.addAnimation(new Rotate3dAnimation(0, -90, size / 2, 0, 0, false, true) {
+        anim.addAnimation(new RotateCameraAnimation(0, -90, size / 2, 0, true) {
             {
                 setInterpolator(new HesitateInterpolator());
             }
@@ -189,6 +189,7 @@ public class CuberMenu extends ViewGroup {
                 textView.setGravity(Gravity.RIGHT);
                 textView.setPadding(padding, padding * 2, padding, padding);
                 textView.animate().alpha(0).translationX(size / 2).setDuration(0);
+
                 textViews.add(textView);
                 addView(textView);
 
@@ -331,26 +332,25 @@ public class CuberMenu extends ViewGroup {
         }
     };
 
-    public static class Rotate3dAnimation extends Animation {
+    public static class RotateCameraAnimation extends Animation {
+
         private final float mFromDegrees;
         private final float mToDegrees;
         private final float mCenterX;
         private final float mCenterY;
-        private final float mDepthZ;
-        private final boolean isReverse;
         private final boolean mIsRotateX;
         private Camera mCamera;
 
-        public Rotate3dAnimation(float fromDegrees, float toDegrees,
-                                 float centerX, float centerY, float depthZ, boolean reverse, boolean isRotateX) {
+        public RotateCameraAnimation(float fromDegrees, float toDegrees,
+                                 float centerX, float centerY, boolean isRotateX) {
             mFromDegrees = fromDegrees;
             mToDegrees = toDegrees;
             mCenterX = centerX;
             mCenterY = centerY;
-            mDepthZ = depthZ;
-            isReverse = reverse;
             mIsRotateX = isRotateX;
         }
+
+
 
         @Override
         public void initialize(int width, int height, int parentWidth, int parentHeight) {
@@ -360,30 +360,26 @@ public class CuberMenu extends ViewGroup {
 
         @Override
         protected void applyTransformation(float interpolatedTime, Transformation t) {
-            final float fromDegrees = mFromDegrees;
-            float degrees = fromDegrees + ((mToDegrees - fromDegrees) * interpolatedTime);
+            float degrees = mFromDegrees + ((mToDegrees - mFromDegrees) * interpolatedTime);
 
             final float centerX = mCenterX;
             final float centerY = mCenterY;
-            final Camera camera = mCamera;
 
             final Matrix matrix = t.getMatrix();
 
-            camera.save();
-            if (isReverse) {
-                camera.translate(0.0f, 0.0f, mDepthZ * interpolatedTime);
-            } else {
-                camera.translate(0.0f, 0.0f, mDepthZ * (1.0f - interpolatedTime));
-            }
+            mCamera.save();
+
             if (mIsRotateX)
-                camera.rotateX(degrees);
+                mCamera.rotateX(degrees);
             else
-                camera.rotateY(degrees);
-            camera.getMatrix(matrix);
-            camera.restore();
+                mCamera.rotateY(degrees);
+
+            mCamera.getMatrix(matrix);
+            mCamera.restore();
 
             matrix.preTranslate(-centerX, -centerY);
             matrix.postTranslate(centerX, centerY);
+
         }
     }
 

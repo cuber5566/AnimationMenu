@@ -21,6 +21,9 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         final CuberMenu view = (CuberMenu) findViewById(R.id.view);
         final Button button = (Button) findViewById(R.id.button);
+
+
+
         button.setOnClickListener(new View.OnClickListener() {
 
             @Override
